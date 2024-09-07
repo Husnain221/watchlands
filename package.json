@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.1.5",
+    "@react-google-maps/api": "^2.19.3",
     "@tailwindcss/forms": "^0.3.2",
     "clsx": "^2.1.1",
     "leaflet": "^1.9.4",
