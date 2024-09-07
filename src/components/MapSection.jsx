@@ -1,93 +1,190 @@
 import React, { useState, useEffect } from 'react';
 import {
-  GoogleMap,
-  useLoadScript,
+  MapContainer,
+  TileLayer,
   Marker,
-  InfoWindow,
-} from '@react-google-maps/api';
+  Popup,
+  Circle,
+  useMapEvents,
+} from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import 'tailwindcss/tailwind.css';
 
-const MapView = ({ listings }) => {
-  const [userLocation, setUserLocation] = useState(null);
-  const [selectedListing, setSelectedListing] = useState(null); // For handling selected listing popup
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyCBxK9V20RhwTQAAV-cuTUptWfy8b90_g0', // Replace with your API key
+// Function to generate the custom marker icon with the price tag
+const getCustomIcon = (price) => {
+  return L.divIcon({
+    html: `<div><p style="background-color: white; border: 1px solid black; padding: 5px; width:60px; border-radius: 25px;">
+             $${price}
+             </p>
+             </div>`,
+    className: '',
   });
+};
 
-  // Map container style
-  const containerStyle = {
-    width: '100%',
-    height: '100vh', // Full height of the viewport
-  };
+const MapViewUpdater = ({ setPropertyLocations, center }) => {
+  const map = useMapEvents({
+    moveend: () => {
+      const bounds = map.getBounds();
+      const zoomLevel = map.getZoom();
+      const range = zoomLevel > 13 ? 0.01 : 0.05; // Smaller range for closer zoom
+      // setPropertyLocations(generateRandomCoords(center, range, zoomLevel * 5));
+    },
+  });
+  return null;
+};
 
-  // Default zoom level to cover a 10km radius
-  const defaultZoom = 14;
+const MapSection = () => {
+  const [center, setCenter] = useState({ lat: 31.5497, lng: 74.3436 }); // Default coordinates for Lahore
+  const [userLocation, setUserLocation] = useState(null);
+  const propertyLocations = [
+    {
+      lat: 31.555350239103067,
+      lng: 74.39333204676731,
+      type: 'Apartment',
+      price: '499747',
+      address: 'Address 92',
+      description: 'A beautiful 2-bedroom apartment with a great view.',
+      img: 'https://a0.muscache.com/im/pictures/prohost-api/Hosting-807996882923051521/original/77e19c57-0699-40bc-a5bd-2ebbd0d82c97.jpeg?im_w=720',
+    },
+    {
+      lat: 31.595527499647567,
+      lng: 74.40631802646273,
+      type: 'House',
+      price: '274759',
+      address: 'Address 14',
+      description: 'Spacious house with a big backyard.',
+      img: 'https://a0.muscache.com/im/pictures/prohost-api/Hosting-807996882923051521/original/77e19c57-0699-40bc-a5bd-2ebbd0d82c97.jpeg?im_w=720',
+    },
+
+    {
+      lat: 31.595527499647567,
+      lng: 74.40631802646273,
+      type: 'House',
+      price: '274759',
+      address: 'Address 14',
+      description: 'Spacious house with a big backyard.',
+      img: 'https://a0.muscache.com/im/pictures/prohost-api/Hosting-807996882923051521/original/77e19c57-0699-40bc-a5bd-2ebbd0d82c97.jpeg?im_w=720',
+    },
+
+    {
+      lat: 31.535527499647567,
+      lng: 74.20631802646273,
+      type: 'House',
+      price: '274759',
+      address: 'Address 14',
+      description: 'Spacious house with a big backyard.',
+      img: 'https://a0.muscache.com/im/pictures/prohost-api/Hosting-807996882923051521/original/77e19c57-0699-40bc-a5bd-2ebbd0d82c97.jpeg?im_w=720',
+    },
+
+    {
+      lat: 31.395127499647567,
+      lng: 71.12631802646273,
+      type: 'House',
+      price: '274759',
+      address: 'Address 14',
+      description: 'Spacious house with a big backyard.',
+      img: 'https://a0.muscache.com/im/pictures/prohost-api/Hosting-807996882923051521/original/77e19c57-0699-40bc-a5bd-2ebbd0d82c97.jpeg?im_w=720',
+    },
+
+    {
+      lat: 31.095527499647567,
+      lng: 74.40631802646373,
+      type: 'House',
+      price: '274759',
+      address: 'Address 14',
+      description: 'Spacious house with a big backyard.',
+      img: 'https://a0.muscache.com/im/pictures/prohost-api/Hosting-807996882923051521/original/77e19c57-0699-40bc-a5bd-2ebbd0d82c97.jpeg?im_w=720',
+    },
+
+    {
+      lat: 31.595527494647567,
+      lng: 74.406318021646273,
+      type: 'House',
+      price: '274759',
+      address: 'Address 14',
+      description: 'Spacious house with a big backyard.',
+      img: 'https://a0.muscache.com/im/pictures/prohost-api/Hosting-807996882923051521/original/77e19c57-0699-40bc-a5bd-2ebbd0d82c97.jpeg?im_w=720',
+    },
+
+    // Add other property locations here with img and description
+  ];
 
   // Get user's current location
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const userLatLng = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        setUserLocation(userLatLng);
+        setCenter(userLatLng);
+        // setPropertyLocations(generateRandomCoords(userLatLng, 0.05)); // Generate initial properties
       });
-    });
+    }
   }, []);
 
-  // Render the map when loaded
-  if (!isLoaded || !userLocation) return <div>Loading map...</div>;
-
   return (
-    <div className='h-screen w-full'>
-      <GoogleMap
-        mapContainerStyle={containerStyle} // Ensure the map takes up the full screen
-        center={userLocation}
-        zoom={defaultZoom}
+    <div className='w-full h-screen'>
+      <MapContainer
+        center={center}
+        zoom={13}
+        style={{ height: '70vh', width: '100%' }}
       >
-        {/* Show a marker for the user's location */}
-        <Marker
-          position={userLocation}
-          icon={{
-            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Custom blue marker for user's location
-          }}
-        >
-          <InfoWindow position={userLocation}>
-            <div>
-              <h3>Me</h3> {/* Tooltip for the current user */}
-            </div>
-          </InfoWindow>
-        </Marker>
+        {/* Tile layer from OpenStreetMap */}
+        <TileLayer
+          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
 
-        {/* Render markers for listings */}
-        {listings.map((listing) => (
+        {propertyLocations.map((property, idx) => (
           <Marker
-            key={listing.id}
-            position={listing.location}
-            onClick={() => setSelectedListing(listing)}
-            icon={{
-              url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png', // Custom red marker for listings
-            }}
-          />
+            key={idx}
+            position={{ lat: property.lat, lng: property.lng }}
+            icon={getCustomIcon(property.price)} // Custom icon with price
+          >
+            <Popup>
+              <div>
+                <img
+                  src={property.img}
+                  alt={property.type}
+                  style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                />
+                <b>{property.type}</b>
+                <br />
+                Price: ${property.price}
+                <br />
+                {property.address}
+                <br />
+                <p>{property.description}</p>
+              </div>
+            </Popup>
+          </Marker>
         ))}
 
-        {/* Show InfoWindow for selected listing */}
-        {selectedListing && (
-          <InfoWindow
-            position={selectedListing.location}
-            onCloseClick={() => setSelectedListing(null)}
-          >
-            <div className='w-64'>
-              <img
-                src={selectedListing.image}
-                alt={selectedListing.name}
-                className='w-full h-32 object-cover rounded'
-              />
-              <h2 className='text-lg font-bold mt-2'>{selectedListing.name}</h2>
-              <p className='text-sm mt-1'>{selectedListing.description}</p>
-            </div>
-          </InfoWindow>
+        {/* User's current location marker */}
+        {userLocation && (
+          <>
+            <Marker position={userLocation}>
+              <Popup>Your Location</Popup>
+            </Marker>
+            <Circle
+              center={userLocation}
+              radius={500} // Circle radius in meters
+              color='green'
+              fillColor='green'
+              fillOpacity={0.2}
+            />
+          </>
         )}
-      </GoogleMap>
+        <MapViewUpdater
+          // setPropertyLocations={setPropertyLocations}
+          center={center}
+        />
+      </MapContainer>
     </div>
   );
 };
 
-export default MapView;
+export default MapSection;

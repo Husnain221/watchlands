@@ -5,12 +5,12 @@ import Footer from '../Footer';
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col relative">
-      <div className="z-50 relative">
+    <div className='min-h-screen flex flex-col relative'>
+      <div className='z-50 fixed w-full '>
         <Navbar />
       </div>
-      <main className="flex-1 z-0 relative">{children}</main>
-      <div className="z-50 relative">
+      <main className='flex-1 z-0 relative mt-16'>{children}</main>
+      <div className='z-50 relative'>
         <Footer />
       </div>
     </div>
