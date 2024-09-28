@@ -1,15 +1,15 @@
-import { FiSearch } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useState, useRef, useEffect } from 'react';
-import { FaChevronDown, FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
-import { Transition } from '@headlessui/react';
+import { FiSearch } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState, useRef, useEffect } from "react";
+import { FaChevronDown, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
+import { Transition } from "@headlessui/react";
 
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // For mobile menu toggle
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
 
   const searchDropdownRef = useRef(null);
@@ -29,8 +29,8 @@ const Header = () => {
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -48,7 +48,11 @@ const Header = () => {
           onClick={() => setMenuOpen(!menuOpen)}
           className="lg:hidden text-blue-900 focus:outline-none"
         >
-          {menuOpen ? <FaTimes className="w-8 h-8" /> : <FaBars className="w-8 h-8" />}
+          {menuOpen ? (
+            <FaTimes className="w-8 h-8" />
+          ) : (
+            <FaBars className="w-8 h-8" />
+          )}
         </button>
 
         {/* Desktop Search Bar */}
@@ -69,7 +73,7 @@ const Header = () => {
           >
             <FaChevronDown
               className={`w-5 h-5 transition-transform duration-300 ${
-                searchDropdownOpen ? 'rotate-180' : ''
+                searchDropdownOpen ? "rotate-180" : ""
               }`}
             />
           </button>
@@ -85,7 +89,7 @@ const Header = () => {
             ref={searchDropdownRef}
           >
             <div className="py-2">
-              {['Sale', 'Purchase', 'Mortgage', 'Rent'].map((item) => (
+              {["Sale", "Hostels", "Mortgage", "Rent"].map((item) => (
                 <button
                   key={item}
                   className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm transition-colors duration-300"
@@ -100,10 +104,14 @@ const Header = () => {
         {/* Desktop Navigation */}
         <ul className="hidden lg:flex gap-4">
           <Link to="/">
-            <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">Home</li>
+            <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
+              Home
+            </li>
           </Link>
           <Link to="/about">
-            <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">About</li>
+            <li className="hidden sm:inline text-slate-700 hover:underline cursor-pointer">
+              About
+            </li>
           </Link>
           <Link to="/profile">
             {currentUser ? (
@@ -113,7 +121,9 @@ const Header = () => {
                 alt="profile"
               />
             ) : (
-              <li className="text-slate-700 hover:underline cursor-pointer">Sign In</li>
+              <li className="text-slate-700 hover:underline cursor-pointer">
+                Sign In
+              </li>
             )}
           </Link>
         </ul>
@@ -140,7 +150,7 @@ const Header = () => {
             className="absolute right-0 top-full mt-2 bg-white border border-gray-300 rounded-xl shadow-xl z-50"
           >
             <div className="py-2">
-              {['Profile', 'Settings', 'Logout'].map((option) => (
+              {["Profile", "Settings", "Logout"].map((option) => (
                 <Link
                   key={option}
                   to={`/${option.toLowerCase()}`}
@@ -167,13 +177,22 @@ const Header = () => {
       >
         <div className="px-4 py-4 bg-blue-600 text-white">
           <div className="flex flex-col space-y-2">
-            <Link to="/" className="text-lg font-medium hover:text-blue-300 transition-colors duration-300">
+            <Link
+              to="/"
+              className="text-lg font-medium hover:text-blue-300 transition-colors duration-300"
+            >
               Home
             </Link>
-            <Link to="/about" className="text-lg font-medium hover:text-blue-300 transition-colors duration-300">
+            <Link
+              to="/about"
+              className="text-lg font-medium hover:text-blue-300 transition-colors duration-300"
+            >
               About
             </Link>
-            <Link to="/profile" className="text-lg font-medium hover:text-blue-300 transition-colors duration-300">
+            <Link
+              to="/profile"
+              className="text-lg font-medium hover:text-blue-300 transition-colors duration-300"
+            >
               Profile
             </Link>
           </div>
