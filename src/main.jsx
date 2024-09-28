@@ -1,20 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Helmet } from 'react-helmet';
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+import store from './redux/store.js'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistor } from "./redux/store.js";
 
-import '@/index.css';
-import App from '@/App';
-
-ReactDOM.render(
-  <React.StrictMode>
-    <Helmet
-      defaultTitle='Vite React Tailwind Starter'
-      titleTemplate='%s | Vite React Tailwind Starter'
-    >
-      <meta charSet='utf-8' />
-      <html lang='id' amp />
-    </Helmet>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+    </PersistGate>
+  </Provider>
+)
