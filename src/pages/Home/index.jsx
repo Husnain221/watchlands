@@ -104,7 +104,7 @@ const Home = () => {
               Show more
             </Link>
           </div>
-          <div className="flex flex-wrap gap-4">
+          <div className="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
             {[1, 2, 3, 4, 5, 6, 7].map(() => (
               <ListingItem />
             ))}
