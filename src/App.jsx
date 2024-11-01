@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from  "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -13,31 +13,35 @@ import Search from "./pages/Search";
 import MainLayout from "./Layouts/mainLayout";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsConditions";
+import ListingDetailPage from "./pages/Detail";
 
 const App = () => {
   return (
     <BrowserRouter>
-   
-      <Routes >
+      <Routes>
         <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms-conditions" element={<TermsAndConditions />} />
-        <Route path="/search" element={<Search/>} />
-        <Route path="/listing/:listingId" element={<Listing />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/create-listing" element={<CreateListing />} />
-          <Route path="/update-listing/:listingId" element={<UpdateListing />} />
-        </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-conditions" element={<TermsAndConditions />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/listing/:listingId" element={<Listing />} />
+          <Route path="/listing/detail" element={<ListingDetailPage />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/create-listing" element={<CreateListing />} />
+            <Route
+              path="/update-listing/:listingId"
+              element={<UpdateListing />}
+            />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 };
 
-export default App
+export default App;
