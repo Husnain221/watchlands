@@ -34,7 +34,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="bg-slate-100  fixed w-full z-50 shadow-md">
+    <header className="bg-slate-100  fixed w-full z-[999] shadow-md">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
           <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">

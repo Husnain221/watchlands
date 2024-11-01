@@ -70,8 +70,11 @@ const Home = () => {
           Let&apos;s get started..
         </Link>
       </div>
-
-      <MapSection listings={listingsData} />
+      <div className="max-w-6xl mx-auto flex flex-col gap-6 pb-10">
+        <div className="py-10 flex flex-col gap-8 border-b">
+          <MapSection listings={listingsData} />
+        </div>
+      </div>
 
       {/* swiper */}
       <Swiper navigation>
